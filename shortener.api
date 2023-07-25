@@ -1,0 +1,31 @@
+/*短链接项目
+author:279
+*/
+
+type ConvertRequest {
+	// validate tag -> "required" 表示不能为空
+	LongUrl string `json:"longUrl" validate:"required"`
+}
+
+type ConvertResponse {
+	ShortUrl string `json:"shortUrl"`
+}
+
+type ShowRequest {
+	ShortUrl string `path:"shortUrl" validate:"required"`
+}
+
+type ShowResponse {
+	LongUrl string `json:"longUrl"`
+}
+
+service shortener-api {
+	
+	@handler ConvertHandler
+	post /v1/convert(ConvertRequest) returns(ConvertResponse)
+	
+	// 27933.cn/lydad  -> shortUrl=lydad -> ShowRequest.ShortUrl=shortUrl
+	@handler ShowHandler
+	get /v1/:shortUrl(ShowRequest) returns(ShowResponse)
+	
+}
